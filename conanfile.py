@@ -2,23 +2,23 @@ from conans import ConanFile, CMake, tools
 import os
 
 
-class LibnameConan(ConanFile):
-    name = "libname"
-    version = "0.0.0"
-    description = "Keep it short"
+class UchardetConan(ConanFile):
+    name = "uchardet"
+    version = "0.0.6"
+    description = "An encoding detector library ported from Mozilla"
     # topics can get used for searches, GitHub topics, Bintray tags etc. Add here keywords about the library
-    topics = ("conan", "libname", "logging")
-    url = "https://github.com/bincrafters/conan-libname"
-    homepage = "https://github.com/original_author/original_lib"
-    author = "Bincrafters <bincrafters@gmail.com>"
-    license = "MIT"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
+    topics = ("encoding", "charset")
+    url = "https://github.com/cqjjjzr/uchardet-conan"
+    homepage = "https://cgit.freedesktop.org/uchardet/uchardet/"
+    author = "Charlie Jiang <cqjjjzr@126.com>"
+    license = "MPL-1.1"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
     exports = ["LICENSE.md"]      # Packages the license for the conanfile.py
     # Remove following lines if the target lib does not use cmake.
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
 
     # Options may need to change depending on the packaged library.
-    settings = "os", "arch", "compiler", "build_type"
+    settings = "os", "arch", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
@@ -26,18 +26,15 @@ class LibnameConan(ConanFile):
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
 
-    requires = (
-        "OpenSSL/1.0.2s@conan/stable",
-        "zlib/1.2.11@conan/stable"
-    )
+    requires = ()
 
     def config_options(self):
         if self.settings.os == 'Windows':
             del self.options.fPIC
 
     def source(self):
-        source_url = "https://github.com/libauthor/libname"
-        tools.get("{0}/archive/v{1}.tar.gz".format(source_url, self.version), sha256="Please-provide-a-checksum")
+        source_url = "https://www.freedesktop.org/software/uchardet/releases/"
+        tools.get("{0}/uchardet-{1}.tar.xz".format(source_url, self.version), sha1="c04257ee7fb5ebbae144311d70b42c1d7efe41b9")
         extracted_dir = self.name + "-" + self.version
 
         # Rename to "source_subfolder" is a convention to simplify later steps
@@ -56,11 +53,11 @@ class LibnameConan(ConanFile):
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
         cmake = self._configure_cmake()
-        cmake.install()
+        # cmake.install()
         # If the CMakeLists.txt has a proper install method, the steps below may be redundant
         # If so, you can just remove the lines below
-        include_folder = os.path.join(self._source_subfolder, "include")
-        self.copy(pattern="*", dst="include", src=include_folder)
+        include_folder = os.path.join(self._source_subfolder, "src")
+        self.copy(pattern="uchardet.h", dst="include", src=include_folder)
         self.copy(pattern="*.dll", dst="bin", keep_path=False)
         self.copy(pattern="*.lib", dst="lib", keep_path=False)
         self.copy(pattern="*.a", dst="lib", keep_path=False)
