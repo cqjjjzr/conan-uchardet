@@ -18,7 +18,7 @@ class UchardetConan(ConanFile):
     generators = "cmake"
 
     # Options may need to change depending on the packaged library.
-    settings = "os", "arch", "build_type"
+    settings = "os", "compiler", "arch", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
@@ -42,7 +42,7 @@ class UchardetConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.definitions["BUILD_TESTS"] = False  # example
+        cmake.definitions["BUILD_BINARY"] = False
         cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
