@@ -8,7 +8,7 @@ class UchardetConan(ConanFile):
     description = "An encoding detector library ported from Mozilla"
     # topics can get used for searches, GitHub topics, Bintray tags etc. Add here keywords about the library
     topics = ("encoding", "charset")
-    url = "https://github.com/cqjjjzr/uchardet-conan"
+    url = "https://github.com/cqjjjzr/conanu-chardet"
     homepage = "https://cgit.freedesktop.org/uchardet/uchardet/"
     author = "Charlie Jiang <cqjjjzr@126.com>"
     license = "MPL-1.1"  # Indicates license type of the packaged library; please use SPDX Identifiers https://spdx.org/licenses/
